@@ -68,7 +68,7 @@ import com.sun.tools.doclets.internal.toolkit.taglets.TagletWriter;
  * javadoc:docFile.append(output) [/c] [/c]
  * 
  * @author Markus Strauch
- * @author Øystein Lunde
+ * @author Ãœystein Lunde
  */
 public class SequenceTaglet implements Taglet
 {
