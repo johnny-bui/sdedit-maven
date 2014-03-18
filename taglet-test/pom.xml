@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.verylazyboy</groupId>
-	<artifactId>todotaglet-test</artifactId>
+	<artifactId>taglet-test</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>todotaglet-test</name>
+	<name>taglet-test</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
