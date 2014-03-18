@@ -48,7 +48,21 @@
 			</properties>
 		</profile>
 	</profiles>
-  
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<optimize>true</optimize>
+					<debug>false</debug>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build> 
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.sdedit</groupId>
@@ -66,7 +80,7 @@
 			<artifactId>tools</artifactId>
 			<scope>system</scope>
 			<version>1.7</version>
-			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+			<systemPath>${toolsjar}</systemPath>
 		</dependency>
 	</dependencies>
 </project>

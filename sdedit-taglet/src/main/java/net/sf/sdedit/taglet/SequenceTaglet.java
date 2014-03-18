@@ -234,7 +234,8 @@ public class SequenceTaglet implements Taglet
         File imageFile = new File(diagramDirectory, fileName);
 
         try {
-            device.saveImage(imageFile.getAbsolutePath(),"PNG");
+            //device.saveImage(imageFile.getAbsolutePath(),"PNG");
+            device.saveImage("PNG", imageFile.getAbsolutePath());
         } catch (IOException ioe) {
             throw new SequenceTagletException("Could not save diagram image: "
                     + ioe.getMessage(), "");
