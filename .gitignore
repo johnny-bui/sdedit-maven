@@ -1,3 +1,4 @@
 /todotaglet/target/
 /todotaglet-test/target/sdedit-core/target/
-sdedit-taglet/
+/sdedit-taglet/target
+/sdedit-core/target

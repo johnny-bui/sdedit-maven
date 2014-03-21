@@ -253,6 +253,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#getName()
      */
+	@Override
     public String getName() {
         return tagName;
     }
@@ -260,6 +261,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inConstructor()
      */
+	@Override
     public boolean inConstructor() {
         return true;
     }
@@ -267,6 +269,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inField()
      */
+	@Override
     public boolean inField() {
         return true;
     }
@@ -274,6 +277,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inMethod()
      */
+	@Override
     public boolean inMethod() {
         return true;
     }
@@ -281,6 +285,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inOverview()
      */
+	@Override
     public boolean inOverview() {
         return false;
     }
@@ -288,6 +293,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inPackage()
      */
+	@Override
     public boolean inPackage() {
         return true;
     }
@@ -295,6 +301,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inType()
      */
+	@Override
     public boolean inType() {
         return true;
     }
@@ -302,6 +309,7 @@ public class SequenceTaglet implements Taglet
     /**
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#isInlineTag()
      */
+	@Override
     public boolean isInlineTag() {
         return false;
     }
