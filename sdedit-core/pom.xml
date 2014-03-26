@@ -2,12 +2,18 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>net.sf.sdedit</groupId>
+		<artifactId>sdedit</artifactId>
+		<version>4.01</version>
+	</parent>
+
 	<groupId>net.sf.sdedit</groupId>
-	<artifactId>sdedit</artifactId>
+	<artifactId>sdedit-core</artifactId>
 	<version>4.01</version>
 	<packaging>jar</packaging>
 
-	<name>sdedit</name>
+	<name>sdedit-core</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>

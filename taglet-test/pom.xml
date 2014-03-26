@@ -25,7 +25,7 @@
 					<tagletArtifact>
 						<groupId>net.sf.sdedit</groupId>
 						<artifactId>sdedit-taglet</artifactId>
-						<version>4.01-java7-SNAPSHOT</version>
+						<version>4.01-java8-SNAPSHOT</version>
 					</tagletArtifact>
 				</configuration>
 				

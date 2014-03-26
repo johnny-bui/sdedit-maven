@@ -27,7 +27,6 @@ package net.sf.sdedit.taglet;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import net.sf.sdedit.config.Configuration;
 import net.sf.sdedit.config.ConfigurationManager;
@@ -35,13 +34,9 @@ import net.sf.sdedit.diagram.Diagram;
 import net.sf.sdedit.text.TextHandler;
 import net.sf.sdedit.ui.ImagePaintDevice;
 
-import com.sun.javadoc.Doc;
-import com.sun.javadoc.PackageDoc;
-import com.sun.javadoc.ProgramElementDoc;
-import com.sun.javadoc.Tag;
-import com.sun.tools.doclets.internal.toolkit.taglets.Taglet;
-import com.sun.tools.doclets.internal.toolkit.taglets.TagletOutput;
-import com.sun.tools.doclets.internal.toolkit.taglets.TagletWriter;
+import com.sun.tools.doclets.Taglet;
+import com.sun.javadoc.*;
+import java.util.Map;
 
 /**
  * This is a taglet that generates sequence diagrams from the contents of
@@ -107,7 +102,7 @@ public class SequenceTaglet implements Taglet
     }
 
     private SequenceTaglet() {
-        nameCounter = new HashMap<String, Integer>();
+        nameCounter = new HashMap<>();
     }
 
     private String getPathToJavadocDestination(Tag tag)
@@ -127,11 +122,16 @@ public class SequenceTaglet implements Taglet
 
         String qualifiedName = pdoc.allClasses()[0].qualifiedName();
         String path = "";
-        for (int i = 0; i < qualifiedName.length(); i++) {
+        /*for (int i = 0; i < qualifiedName.length(); i++) {
             if (qualifiedName.charAt(i) == '.') {
                 path += "../";
             }
-        }
+        }*/
+		String[] dirs = qualifiedName.split("\\.");
+		System.err.println(">>>>>> length:"+dirs.length);
+		for (int i = 1; i < dirs.length; ++i){
+			path +="../";
+		}
         return path;
     }
 
@@ -187,14 +187,14 @@ public class SequenceTaglet implements Taglet
             source[0] = "";
         }
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         for (String string : source) {
             string = string.trim();
             if (string.startsWith("<") && string.endsWith(">")) {
                 continue;
             }
-            buffer.append(string + "\n");
+            buffer.append(string).append("\n");
         }
         String specification = buffer.toString().trim();
         if (specification.length() == 0) {
@@ -212,7 +212,7 @@ public class SequenceTaglet implements Taglet
             new Diagram(conf, handler, device).generate();
         } catch (Exception e) {
             int error = handler.getLineNumber();
-            StringBuffer code = new StringBuffer("<br><tt>");
+            StringBuilder code = new StringBuilder("<br><tt>");
             for (int i = 0; i < source.length; i++) {
                 String html = source[i].replaceAll("&", "&amp;").replaceAll(
                         "<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"",
@@ -221,7 +221,7 @@ public class SequenceTaglet implements Taglet
                     html = "<FONT COLOR=\"red\"><U><B>" + html
                             + "</B></U></FONT>";
                 }
-                code.append(html + "<br>");
+                code.append(html).append("<br>");
             }
             throw new SequenceTagletException(
                     "Malformed diagram specification: " + e.getMessage(),
@@ -231,10 +231,10 @@ public class SequenceTaglet implements Taglet
                             + "</font></B>" + code.toString() + "</DD>");
         }
         String fileName = imageBaseName + ".png";
+		setDestinationDirectory("./");
         File imageFile = new File(diagramDirectory, fileName);
-
+		System.err.println(">>>>> imageFile.absolutePath: " + imageFile.getAbsolutePath());	
         try {
-            //device.saveImage(imageFile.getAbsolutePath(),"PNG");
             device.saveImage("PNG", imageFile.getAbsolutePath());
         } catch (IOException ioe) {
             throw new SequenceTagletException("Could not save diagram image: "
@@ -314,7 +314,8 @@ public class SequenceTaglet implements Taglet
         return false;
     }
 
-    private String toString(Tag tag, TagletWriter writer) {
+	@Override
+    public String toString(Tag tag) {
         String output;
         try {
             String path = getPathToJavadocDestination(tag);
@@ -322,14 +323,13 @@ public class SequenceTaglet implements Taglet
             output = generateOutput(path, getImageName(tag), tag.text().split(
                     "\n"));
         } catch (SequenceTagletException ste) {
-            writer.configuration().message.warning("doclet.in", ste
-                    .getMessage(), tag.holder().name());
             return ste.output;
         }
         return output;
     }
 
-    private String toString(Tag[] tags, TagletWriter writer) {
+	@Override
+    public String toString(Tag[] tags) {
         if (tags != null && tags.length > 0) {
             String output = "";
             for (Tag tag : tags) {
@@ -337,8 +337,6 @@ public class SequenceTaglet implements Taglet
                     output += generateOutput(getPathToJavadocDestination(tag),
                             getImageName(tag), tag.text().split("\n"));
                 } catch (SequenceTagletException ste) {
-                    writer.configuration().message.warning("doclet.in", ste
-                            .getMessage(), tags[0].holder().name());
                     output += ste.output;
                 }
             }
@@ -353,45 +351,13 @@ public class SequenceTaglet implements Taglet
         diagramDirectory.mkdirs();
     }
 
-    /**
-     * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#getTagletOutput(com.sun.javadoc.Tag,
-     *      com.sun.tools.doclets.internal.toolkit.taglets.TagletWriter)
-     */
-    public TagletOutput getTagletOutput(Tag tag, TagletWriter writer)
-            throws IllegalArgumentException {
-        if (diagramDirectory == null) {
-            setDestinationDirectory(writer.configuration().destDirName);
-        }
-        TagletOutput out = writer.getTagletOutputInstance();
-        out.setOutput(toString(tag, writer));
-        return out;
-    }
-
-    /**
-     * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#getTagletOutput(com.sun.javadoc.Doc,
-     *      com.sun.tools.doclets.internal.toolkit.taglets.TagletWriter)
-     */
-    public TagletOutput getTagletOutput(Doc holder, TagletWriter writer)
-            throws IllegalArgumentException {
-        if (diagramDirectory == null) {
-            setDestinationDirectory(writer.configuration().destDirName);
-        }
-        TagletOutput out = writer.getTagletOutputInstance();
-        Tag[] tags = holder.tags(getName());
-        if (tags.length == 0) {
-            return null;
-        }
-        out.setOutput(toString(tags, writer));
-        return out;
-    }
-
     private static class SequenceTagletException extends Exception
     {
 
         /**
          * Appears on the HTML page
          */
-        String output;
+        String output="";
 
         /**
          * 
